@@ -1,0 +1,180 @@
+import 'package:corporatemobile/constant/colours.dart';
+import 'package:corporatemobile/constant/textstyle.dart';
+import 'package:corporatemobile/view/Screens/chat/chatScreen.dart';
+import 'package:corporatemobile/view/Screens/chat/widget/add_users/departmentList.dart';
+import 'package:corporatemobile/view/Screens/chat/widget/add_users/personalList.dart';
+
+import 'package:corporatemobile/view/Screens/home/widget/Home_reach_listTile.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
+
+class ChatList extends StatelessWidget {
+  ChatList({super.key});
+  final _key = GlobalKey<ExpandableFabState>();
+  final scaffoldKey = GlobalKey<ScaffoldMessengerState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(120.0),
+          child: AppBar(
+            backgroundColor: Colors.transparent,
+            automaticallyImplyLeading: false,
+            surfaceTintColor: Colors.transparent,
+            toolbarHeight: 100.0,
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colours.chatwhite,
+              ),
+            ),
+            title: Text(
+              'Chat',
+              style: CustomText.Appbarheading(context),
+            ),
+            bottom: TabBar(
+              unselectedLabelColor: const Color.fromARGB(255, 112, 117, 111),
+              labelColor: const Color.fromARGB(255, 239, 240, 239),
+              dividerColor: Colors.transparent,
+              indicatorSize: TabBarIndicatorSize.label,
+              indicator: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                color: Colours.greenColour,
+              ),
+              tabs: [
+                Tab(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: Colours.greenColour,
+                      ),
+                    ),
+                    child: const Align(
+                      alignment: Alignment.center,
+                      child: Text("Personal"),
+                    ),
+                  ),
+                ),
+                Tab(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: Colours.greenColour,
+                        width: 1,
+                      ),
+                    ),
+                    child: const Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Department",
+                        style: TextStyle(),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            ListView.builder(
+              itemCount: 5,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => ChatScreen(),
+                      ),
+                    );
+                  },
+                  child: chatListTile(
+                    name: 'Divya',
+                    message: 'Good morning',
+                    date: 'Sat, 29 Jun',
+                    imagePath:
+                        'https://i.pinimg.com/474x/08/d0/e9/08d0e97ed1c57be057936ce66d7543c0.jpg',
+                  ),
+                );
+              },
+            ),
+            ListView.builder(
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => ChatScreen(),
+                      ),
+                    );
+                  },
+                  child: chatListTile(
+                    name: 'Divya',
+                    message: 'Good evening',
+                    date: 'Sat, 12 Jun',
+                    imagePath:
+                        'https://i.pinimg.com/474x/bc/9e/b1/bc9eb1916f4bbe4fdef5569012219cfc.jpg',
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+        floatingActionButtonLocation: ExpandableFab.location,
+        floatingActionButton: ExpandableFab(
+          key: _key,
+          type: ExpandableFabType.up,
+          childrenAnimation: ExpandableFabAnimation.rotate,
+          distance: 70,
+          openButtonBuilder: RotateFloatingActionButtonBuilder(
+            child: const Icon(
+              Icons.add,
+              size: 32,
+            ),
+          ),
+          overlayStyle: const ExpandableFabOverlayStyle(
+            color: Colors.transparent,
+          ),
+          children: [
+            Row(
+              children: [
+                const Text('Personal'),
+                const SizedBox(width: 20),
+                FloatingActionButton.small(
+                  heroTag: 'personal',
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>PersonalChatList()));
+                  },
+                  child: const Icon(Icons.person),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                const Text('Department'),
+                const SizedBox(width: 20),
+                FloatingActionButton.small(
+                  heroTag: 'department',
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>DepartmentChatList()));
+                  },
+                  child: const Icon(Icons.groups),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
